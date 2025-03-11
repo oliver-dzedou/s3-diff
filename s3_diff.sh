@@ -87,8 +87,6 @@ comm -12 "$bucket1_list" "$bucket2_list" > "$common_list"
 
 echo "Step: saving output to $result_file"
 
-# Optional JSON diffing section (commented out):
-: <<'EOF'
 echo "Step: processing common files (limited to max_files = $max_files)..."
 common_count=$(wc -l < "$common_list")
 if [ "$common_count" -gt "$max_files" ]; then
@@ -110,8 +108,8 @@ while IFS= read -r file; do
   fi
 done < "$common_list"
 
-rm -f tmp1.json tmp2.json
-EOF
+echo "Step: saved output to $result_file"
+echo "Step: cleaning up"
 
-# Remove temporary files
-rm -f "$bucket1_list" "$bucket2_list" "$common_list" "$bucket1_exclusive" "$bucket2_exclusive"
+rm -f tmp1.json tmp2.json "$bucket1_list" "$bucket2_list" "$common_list" "$bucket1_exclusive" "$bucket2_exclusive"
+
