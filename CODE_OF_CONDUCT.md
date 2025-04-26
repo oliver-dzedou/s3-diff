@@ -32,7 +32,7 @@ This Code of Conduct applies within all project spaces and public spaces when re
 
 ## Reporting and Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior can be reported by contacting the project team at [contact@example.com]. All reports will be reviewed and investigated promptly and fairly. Maintainers are expected to maintain confidentiality regarding reporters and take appropriate corrective action.
+Instances of abusive, harassing, or otherwise unacceptable behavior can be reported by contacting the project team at [dzedou@chronorogues.com]. All reports will be reviewed and investigated promptly and fairly. Maintainers are expected to maintain confidentiality regarding reporters and take appropriate corrective action.
 
 ## Attribution
 
