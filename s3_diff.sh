@@ -1,19 +1,7 @@
 #!/bin/bash
-# s3_diff.sh
-#
-# This script compares the JSON contents of two AWS S3 buckets.
-# It lists files (using aws s3 ls), computes the differences between the two lists,
-# and writes the output (files unique to each bucket) into a result text file.
-#
-# Usage: ./s3_diff.sh [-m max_files] [-o output_file] s3://bucket1 s3://bucket2
-#   -m max_files: (optional) Maximum number of common files to process (default: 100)
-#   -o output_file: (optional) File to save the result (default: s3_diff_output.txt)
-
-# Default values
 max_files=100
 result_file="s3_diff_output.txt"
 
-# Parse options
 while getopts "m:o:" opt; do
   case $opt in
     m)
@@ -31,7 +19,6 @@ done
 
 shift $((OPTIND -1))
 
-# Ensure two positional arguments remain
 if [ "$#" -ne 2 ]; then
   echo "Usage: $0 [-m max_files] [-o output_file] s3://bucket1 s3://bucket2"
   exit 1
@@ -40,17 +27,14 @@ fi
 bucket1="$1"
 bucket2="$2"
 
-# Clear the result file if it already exists
 > "$result_file"
 
-# Create temporary files to hold file lists
 bucket1_list=$(mktemp)
 bucket2_list=$(mktemp)
 common_list=$(mktemp)
 bucket1_exclusive=$(mktemp)
 bucket2_exclusive=$(mktemp)
 
-# Function to list files from an S3 bucket and sort the output.
 list_bucket() {
   local bucket=$1
   aws s3 ls "$bucket" --recursive | awk '{print $NF}' | sort
@@ -63,18 +47,12 @@ echo "Step: listing $bucket2..."
 list_bucket "$bucket2" > "$bucket2_list"
 
 echo "Step: sorting file lists..."
-# (The file lists are already sorted by the list_bucket function)
 
 echo "Step: comparing file lists..."
-# Compute differences using comm (files must be sorted)
-# Files only in bucket1:
 comm -23 "$bucket1_list" "$bucket2_list" > "$bucket1_exclusive"
-# Files only in bucket2:
 comm -13 "$bucket1_list" "$bucket2_list" > "$bucket2_exclusive"
-# Files common to both (not printed):
 comm -12 "$bucket1_list" "$bucket2_list" > "$common_list"
 
-# Write the final results to the result file (do not print these to the console)
 {
   echo ""
   echo "Files only in $bucket1:"
